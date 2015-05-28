@@ -48,8 +48,15 @@ class KnapsackCipher
   # - generalknap: Array object containing general knapsack numbers
   # Returns:
   # - Array of encrypted numbers
-  def self.encrypt(plaintext, generalknap=DEF_GENERAL)
-    # TODO: implement this method
+  def self.encrypt(plaintext, generalknap = DEF_GENERAL)
+    enc_number = lambda do |char, knapsack|
+      char.unpack('B*').first.chars.zip(knapsack).reduce(0) do |sum, pair|
+        sum + pair.map(&:to_i).reduce(:*)
+      end
+    end
+    plaintext.chars.map do |char|
+      enc_number.call(char, generalknap)
+    end
   end
 
   # Decrypts encrypted Array
@@ -60,10 +67,10 @@ class KnapsackCipher
   # - n: prime number
   # Returns:
   # - String of plain text
-  def self.decrypt(cipherarray, superknap=DEF_SUPER, m=M, n=N)
+  def self.decrypt(cipherarray, superknap = DEF_SUPER, m = M, n = N)
     unless superknap.is_a? SuperKnapsack
       fail(ArgumentError, 'Argument should be a SuperKnapsack object')
     end
-    # TODO: implement this method
+
   end
 end
