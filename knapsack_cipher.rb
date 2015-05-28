@@ -49,13 +49,13 @@ class KnapsackCipher
   # Returns:
   # - Array of encrypted numbers
   def self.encrypt(plaintext, generalknap = DEF_GENERAL)
-    enc_number = lambda do |char, knapsack|
-      char.unpack('B*').first.chars.zip(knapsack).reduce(0) do |sum, pair|
+    enc_number = lambda do |char|
+      char.unpack('B*').first.chars.zip(generalknap).reduce(0) do |sum, pair|
         sum + pair.map(&:to_i).reduce(:*)
       end
     end
     plaintext.chars.map do |char|
-      enc_number.call(char, generalknap)
+      enc_number.call(char)
     end
   end
 
@@ -71,6 +71,5 @@ class KnapsackCipher
     unless superknap.is_a? SuperKnapsack
       fail(ArgumentError, 'Argument should be a SuperKnapsack object')
     end
-
   end
 end
